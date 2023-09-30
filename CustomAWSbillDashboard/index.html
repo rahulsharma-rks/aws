@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
+</head>
+<style>
+    h1{
+        text-align: center;
+        font-style:normal;
+        font-size: 40px;
+        font-family: 'Times New Roman', Times, serif;
+        background-color: whitesmoke;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    .body_bg{
+        background-color: #b6e1e1; /* Use the desired light blue color code */
+        /* Add any other styles as needed */
+        padding: 30px;
+        border-radius: 5px;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    .body_graph{
+        background-color: bisque;
+        border-radius: 10px;
+    }
+    body{
+        background-color: beige;
+    }
+</style>
+<body>
+  
+  
+  <!-- Date range selection -->
+  <h1 style="text-align: center;">Cost Optimization Dashboard</h1>
+  <div class="body_bg">
+    <label for="start-date">Start Date:</label>
+    <input style="font-family: 'Courier New', Courier, monospace; border-radius: 5px;"type="date" id="start_date"> &nbsp;
+    <label for="end-date">End Date:</label>
+    <input style="font-family: 'Courier New', Courier, monospace; border-radius: 5px;"type="date" id="end_date"> &nbsp;
+    <button style="font-family: 'Courier New', Courier, monospace; border-radius: 5px;" id="fetch-data-btn">Fetch Data</button>
+  </div>
+  
+  <!-- Chart section to display cost data -->
+  <div class="body_graph">
+    <canvas id="chartContainer" width="600" height="400"></canvas>
+  </div>
+
+  <script>
+    // Initialize the chart and store it in a variable
+    const chart = new CanvasJS.Chart("chartContainer", {
+      // Chart configuration options
+      // For example, data, axis, title, etc.
+      title: {
+        text: "Data from Lambda"
+      },
+      data: [{
+        type: "bar",
+        dataPoints: [] // Empty dataPoints array for initial rendering
+      }]
+    });
+
+    // Function to update the chart with new data
+    const updateChart = (data) => {
+      // Format the API data into CanvasJS-compatible dataPoints
+      // Check if the data is an array; if not, convert it to an array with a single data point
+      const formattedData = Array.isArray(data) ? data : [{ label: "Data Point", value: data }];
+
+      // Update the dataPoints of the chart with the formatted data
+      chart.options.data[0].dataPoints = formattedData;
+
+      // Render the updated chart
+      chart.render();
+    };
+
+    // Function to fetch data based on selected date range
+    const fetchData = async () => {
+      const startDate = document.getElementById('start_date').value;
+      const endDate = document.getElementById('end_date').value;
+
+      try {
+        const response = await fetch(`https://ltyspnzckfuxjsvig5f5qdfa340pzrlh.lambda-url.ap-south-1.on.aws/?start=${startDate}&end=${endDate}`);
+        const data = await response.json();
+        // Process the data and update the chart
+        console.log(data);
+        updateChart(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    // Event listener for the "Fetch Data" button click
+    document.getElementById('fetch-data-btn').addEventListener('click', () => {
+      fetchData();
+    });
+  </script>
+</body>
+</html>

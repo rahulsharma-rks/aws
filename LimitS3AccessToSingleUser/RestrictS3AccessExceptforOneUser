@@ -1,0 +1,42 @@
+** Restrict S3 Access Except for One User **
+
+
+{
+    "Version": "2012-10-17",
+    "Id": "AllowOneUserPolicy",
+    "Statement": [
+        {
+            "Sid": "AllowSpecificUser",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::your-bucket-name",
+                "arn:aws:s3:::your-bucket-name/*"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:userId": "YOUR_IAM_USER_ID"
+                }
+            }
+        },
+        {
+            "Sid": "DenyAllUsers",
+            "Effect": "Deny",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::your-bucket-name",
+                "arn:aws:s3:::your-bucket-name/*"
+            ],
+            "Condition": {
+                "StringNotEquals": {
+                    "aws:userId": "YOUR_IAM_USER_ID"
+                }
+            }
+        }
+    ]
+}
+
+
+Replace the placeholders with the appropriate values:
+    your-bucket-name: Replace this with the actual name of your S3 bucket.
+    YOUR_IAM_USER_ID: Replace this with the IAM user ID of the user you want to grant access to.
