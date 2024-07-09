@@ -21,3 +21,5 @@
         }
     ]
 }
+
+* Create a role and attach it to EC2 Instance. 
