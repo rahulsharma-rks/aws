@@ -1,6 +1,7 @@
 """
 Replicate data from primary bucket to backup bucket, when new file is uploaded in primary bucket, it should automatically reflect in 
 backup bucket. Data should not be deleted from backup bucket even its deleted from primary bucket.
+Document: S3 Data BackUp.pdf
 """
 
 
