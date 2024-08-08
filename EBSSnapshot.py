@@ -1,3 +1,5 @@
+#Take EBS Snapshot daily and drop a mail with Instance Id, Snapshot Id and Timestamp.pdf
+
 import boto3
 from datetime import datetime
 
