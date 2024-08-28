@@ -1,3 +1,9 @@
+'''
+Note for RDS:
+Not all RDS instance types support stopping and starting. For example, Aurora clusters don't support stopping, but individual Aurora instances do.
+Stopping and starting are typically supported for Single-AZ DB instances and require that the instance is not in a Multi-AZ configuration.
+'''
+
 import boto3
 
 # Initialize the RDS client
